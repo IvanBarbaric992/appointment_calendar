@@ -1,8 +1,5 @@
+import Calendar from 'Components/Calendar';
 
-const AppointmentCalendar = () => (
-  <div>
-    <> </>
-  </div>
-);
+const AppointmentCalendar = () => <Calendar />;
 
 export default AppointmentCalendar;

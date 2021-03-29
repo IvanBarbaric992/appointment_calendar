@@ -1,0 +1,10 @@
+.header {
+  width: 100%;
+  color: aqua;
+
+  &__toolbar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
