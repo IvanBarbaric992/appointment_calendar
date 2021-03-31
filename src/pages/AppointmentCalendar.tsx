@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { AppointmentModel } from '@devexpress/dx-react-scheduler';
+import { useEffect, useRef, useState } from 'react';
+import { AppointmentModel, ChangeSet } from '@devexpress/dx-react-scheduler';
 import Calendar from 'Components/Calendar';
 
 import { getInitialRandomAppointments } from 'services/utils/generateRandomReservedDates';
@@ -7,9 +7,10 @@ import { getNextDayDate } from 'services/utils/getNextDayDate';
 
 const AppointmentCalendar = () => {
   const [currentDate, setCurrentDate] = useState<Date>(getNextDayDate());
-  const [initialAppointments, setInitialAppointments] = useState<AppointmentModel[]>(
+  const [appointments, setAppointments] = useState<AppointmentModel[]>(
     getInitialRandomAppointments({ nextDayDate: currentDate })
   );
+  const newAppointments = useRef<AppointmentModel[]>([]);
   const handleCurrentDateChange = (currDate: Date): void => {
     if (currDate.getDate() !== new Date().getDate() && currDate.getDay() !== 1) {
       setCurrentDate(
@@ -20,11 +21,40 @@ const AppointmentCalendar = () => {
     }
   };
 
+  const handleDoubleClick = (e: never, onDoubleClick: () => unknown, startDate: Date) => {
+    if (
+      !newAppointments.current.find(x => (x.startDate as Date).getDate() === startDate.getDate()) &&
+      newAppointments.current.length < 2
+    ) {
+      onDoubleClick();
+    }
+  };
+
+  const handleCommitChanges = ({ added, deleted }: ChangeSet): void => {
+    if (added) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const newAppointmentId = appointments.length > 0 ? +appointments[appointments.length - 1].id! + 1 : 0;
+      setAppointments(prevState => [...prevState, { id: newAppointmentId, ...added } as AppointmentModel]);
+      newAppointments.current = [...newAppointments.current, { id: newAppointmentId, ...added } as AppointmentModel];
+    }
+    if (deleted) {
+      setAppointments(prevState => prevState.filter(x => x.id !== deleted));
+      newAppointments.current = newAppointments.current.filter(x => x.id !== deleted);
+    }
+  };
+
   useEffect(() => {
-    setInitialAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
+    setAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
   }, [currentDate]);
 
-  return <Calendar currentDateChange={handleCurrentDateChange} initialAppointments={initialAppointments} />;
+  return (
+    <Calendar
+      commitChanges={handleCommitChanges}
+      currentDateChange={handleCurrentDateChange}
+      initialAppointments={appointments}
+      handleDoubleClick={handleDoubleClick}
+    />
+  );
 };
 
 export default AppointmentCalendar;

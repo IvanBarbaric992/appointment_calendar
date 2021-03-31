@@ -1,26 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
 import { WeekView } from '@devexpress/dx-react-scheduler-material-ui';
 
-const TimeTableCell = (props: WeekView.TimeTableCellProps) => {
-  const { startDate } = props;
+interface ExtendedTimeTableCellProps extends WeekView.TimeTableCellProps {
+  handleDoubleClick(d: unknown, callback?: (e: any) => void, startDate?: Date): void;
+}
+
+const TimeTableCell = ({ handleDoubleClick, ...restProps }: ExtendedTimeTableCellProps) => {
+  const { startDate, onDoubleClick } = restProps;
+
   if (startDate?.getDay() === 0 || (startDate?.getDay() === 6 && startDate?.getDate() % 2 !== 0)) {
-    return <WeekView.TimeTableCell {...props} className="day--weekend" />;
+    return <WeekView.TimeTableCell {...restProps} className="day--weekend" />;
   }
   if (
     (startDate && startDate < new Date()) ||
     (startDate && startDate?.getDate() % 2 === 0 && startDate?.getHours() >= 14) ||
     (startDate && startDate?.getDate() % 2 !== 0 && startDate?.getHours() < 13)
   ) {
-    return <WeekView.TimeTableCell {...props} className="time--not-available" />;
+    return <WeekView.TimeTableCell {...restProps} className="time--not-available" />;
   }
 
   if (startDate && (startDate?.getHours() === 11 || startDate?.getHours() === 16) && startDate?.getMinutes() < 30) {
     return (
-      <WeekView.TimeTableCell {...props} className="time--rest">
+      <WeekView.TimeTableCell {...restProps} className="time--rest">
         Lunch break
       </WeekView.TimeTableCell>
     );
   }
-  return <WeekView.TimeTableCell {...props} />;
+  return <WeekView.TimeTableCell {...restProps} onDoubleClick={d => handleDoubleClick(d, onDoubleClick, startDate)} />;
 };
 
 export default TimeTableCell;

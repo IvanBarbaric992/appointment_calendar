@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FC } from 'react';
 
 import { Paper } from '@material-ui/core';
-import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
+import { ViewState, AppointmentModel, EditingState, ChangeSet } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   WeekView,
@@ -9,36 +11,53 @@ import {
   Appointments,
   DateNavigator,
   AppointmentTooltip,
+  AppointmentForm,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
 import Legend from './Legend';
 import Appointment from './Appointment';
+import CustomizedAppointmentForm from './CustomizedAppointmentForm';
+import CustomizedDateEditorComponent from './CustomizedDateEditorComponent';
+import CustomizedBooleanComponent from './CustomizedBooleanComponent';
 
 interface CalendarProps {
   currentDate?: string | number | Date;
-  // eslint-disable-next-line no-unused-vars
   currentDateChange?(currDate: Date): void;
+  commitChanges(changes: ChangeSet): void;
   initialAppointments?: AppointmentModel[];
+  handleDoubleClick(d: unknown, callback?: (e: any) => void, startDate?: Date): void;
 }
 
-const Calendar: FC<CalendarProps> = ({ currentDate, currentDateChange, initialAppointments }) => (
+const Calendar: FC<CalendarProps> = ({
+  currentDate,
+  currentDateChange,
+  commitChanges,
+  handleDoubleClick,
+  initialAppointments,
+}) => (
   <>
     <Legend />
     <Paper>
       <Scheduler firstDayOfWeek={1} data={initialAppointments}>
         <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
+        <EditingState onCommitChanges={commitChanges} />
         <WeekView
           startDayHour={8}
           endDayHour={19}
           dayScaleCellComponent={DayScaleCell}
-          timeTableCellComponent={TimeTableCell}
+          timeTableCellComponent={props => <TimeTableCell handleDoubleClick={handleDoubleClick} {...props} />}
         />
         <Toolbar />
         <DateNavigator />
         <Appointments appointmentComponent={Appointment} />
-        <AppointmentTooltip />
+        <AppointmentTooltip showCloseButton showDeleteButton />
+        <AppointmentForm
+          basicLayoutComponent={CustomizedAppointmentForm}
+          dateEditorComponent={CustomizedDateEditorComponent}
+          booleanEditorComponent={CustomizedBooleanComponent}
+        />
       </Scheduler>
     </Paper>
   </>

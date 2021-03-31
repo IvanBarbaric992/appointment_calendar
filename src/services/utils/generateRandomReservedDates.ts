@@ -31,6 +31,7 @@ export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
   if (workingDates.length < 3) {
     numberOfAppointments = 7;
   }
+  let appointmentId = 0;
   while (reservedDates.length < numberOfAppointments) {
     const random = Math.floor(Math.random() * workingDates.length);
     const randomMorningHour = Math.floor(Math.random() * morningWorkingHours.length);
@@ -47,8 +48,14 @@ export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
     if (!reservedDates.find(x => x.startDate.toString() === date?.toString())) {
       reservedDates = [
         ...reservedDates,
-        { title: 'Reserved', startDate: new Date(date), endDate: new Date(date.setMinutes(date.getMinutes() + 30)) },
+        {
+          id: appointmentId,
+          title: 'Reserved',
+          startDate: new Date(date),
+          endDate: new Date(date.setMinutes(date.getMinutes() + 30)),
+        },
       ]; // new Date() is necessary because of reference problems
+      appointmentId += 1;
     }
 
     date = null;
