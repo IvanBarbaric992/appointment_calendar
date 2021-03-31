@@ -14,6 +14,7 @@ import {
 import { getNextDayDate } from 'services/utils/getNextDayDate';
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
+import Legend from './Legend';
 
 interface CalendarProps {
   currentDate?: string | number | Date;
@@ -23,21 +24,24 @@ interface CalendarProps {
 }
 
 const Calendar: FC<CalendarProps> = ({ currentDate, currentDateChange, initialAppointments }) => (
-  <Paper>
-    <Scheduler firstDayOfWeek={1} data={initialAppointments}>
-      <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
-      <WeekView
-        startDayHour={8}
-        endDayHour={19}
-        dayScaleCellComponent={DayScaleCell}
-        timeTableCellComponent={props => <TimeTableCell nextDayDate={getNextDayDate()} {...props} />}
-      />
-      <Toolbar />
-      <DateNavigator />
-      <Appointments />
-      <AppointmentTooltip />
-    </Scheduler>
-  </Paper>
+  <>
+    <Legend />
+    <Paper>
+      <Scheduler firstDayOfWeek={1} data={initialAppointments}>
+        <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
+        <WeekView
+          startDayHour={8}
+          endDayHour={19}
+          dayScaleCellComponent={DayScaleCell}
+          timeTableCellComponent={props => <TimeTableCell nextDayDate={getNextDayDate()} {...props} />}
+        />
+        <Toolbar />
+        <DateNavigator />
+        <Appointments />
+        <AppointmentTooltip />
+      </Scheduler>
+    </Paper>
+  </>
 );
 
 export default Calendar;

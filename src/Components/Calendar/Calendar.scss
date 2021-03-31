@@ -20,3 +20,39 @@
     text-align: center !important;
   }
 }
+
+.container {
+  width: 100%;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+
+  &__box {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+
+    & > div {
+      width: 5rem;
+      height: 2rem;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      margin-right: 2rem;
+    }
+
+    &--available {
+      background-color: white;
+    }
+    &--not-available {
+      background-color: rgb(235, 235, 228);
+    }
+    &--reserved {
+      background-color: rgb(66, 165, 245);
+    }
+    &--lunch {
+      background-color: rgba(231, 179, 1, 255);
+    }
+    &--weekend {
+      background-color: rgba(254, 178, 178, 255);
+    }
+  }
+}
