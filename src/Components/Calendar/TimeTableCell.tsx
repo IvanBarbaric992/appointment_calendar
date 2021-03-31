@@ -11,7 +11,7 @@ const TimeTableCell = (props: CustomTimeTableCellProps) => {
     return <WeekView.TimeTableCell {...rest} className="day--weekend" />;
   }
   if (
-    (startDate && startDate.getDay() < nextDayDate.getDay()) ||
+    (startDate && startDate < new Date()) ||
     (startDate && startDate?.getDate() % 2 === 0 && startDate?.getHours() >= 14) ||
     (startDate && startDate?.getDate() % 2 !== 0 && startDate?.getHours() < 13)
   ) {

@@ -17,7 +17,8 @@ import TimeTableCell from './TimeTableCell';
 
 interface CalendarProps {
   currentDate?: string | number | Date;
-  currentDateChange?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  currentDateChange?(currDate: Date): void;
   initialAppointments?: AppointmentModel[];
 }
 
