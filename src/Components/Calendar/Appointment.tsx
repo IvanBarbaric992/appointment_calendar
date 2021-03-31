@@ -4,8 +4,12 @@ const Appointment = ({ children, ...restProps }: Appointments.AppointmentProps) 
   <Appointments.Appointment
     {...restProps}
     style={{
-      backgroundColor: '#FFC107',
+      display: 'flex',
+      justifyContent: 'center',
+      textAlign: 'center',
+      alignItems: 'center',
       borderRadius: '8px',
+      fontSize: '1rem',
     }}
   >
     {children}

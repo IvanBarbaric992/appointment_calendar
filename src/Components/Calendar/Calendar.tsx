@@ -11,10 +11,10 @@ import {
   AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-import { getNextDayDate } from 'services/utils/getNextDayDate';
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
 import Legend from './Legend';
+import Appointment from './Appointment';
 
 interface CalendarProps {
   currentDate?: string | number | Date;
@@ -33,11 +33,11 @@ const Calendar: FC<CalendarProps> = ({ currentDate, currentDateChange, initialAp
           startDayHour={8}
           endDayHour={19}
           dayScaleCellComponent={DayScaleCell}
-          timeTableCellComponent={props => <TimeTableCell nextDayDate={getNextDayDate()} {...props} />}
+          timeTableCellComponent={TimeTableCell}
         />
         <Toolbar />
         <DateNavigator />
-        <Appointments />
+        <Appointments appointmentComponent={Appointment} />
         <AppointmentTooltip />
       </Scheduler>
     </Paper>
