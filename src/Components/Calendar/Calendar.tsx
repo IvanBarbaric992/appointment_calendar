@@ -1,30 +1,40 @@
 import React, { FC } from 'react';
 
 import { Paper } from '@material-ui/core';
-import { ViewState } from '@devexpress/dx-react-scheduler';
+import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   WeekView,
   Toolbar,
-  DateNavigator,
   Appointments,
-  TodayButton,
+  DateNavigator,
+  AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
+
+import { getNextDayDate } from 'services/utils/getNextDayDate';
+import DayScaleCell from './DayScaleCell';
+import TimeTableCell from './TimeTableCell';
 
 interface CalendarProps {
   currentDate?: string | number | Date;
   currentDateChange?: () => void;
+  initialAppointments?: AppointmentModel[];
 }
 
-const Calendar: FC<CalendarProps> = ({ currentDate, currentDateChange }) => (
+const Calendar: FC<CalendarProps> = ({ currentDate, currentDateChange, initialAppointments }) => (
   <Paper>
-    <Scheduler height={660}>
+    <Scheduler firstDayOfWeek={1} data={initialAppointments}>
       <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
-      <WeekView startDayHour={8} endDayHour={19} />
+      <WeekView
+        startDayHour={8}
+        endDayHour={19}
+        dayScaleCellComponent={DayScaleCell}
+        timeTableCellComponent={props => <TimeTableCell nextDayDate={getNextDayDate()} {...props} />}
+      />
       <Toolbar />
       <DateNavigator />
-      <TodayButton />
       <Appointments />
+      <AppointmentTooltip />
     </Scheduler>
   </Paper>
 );

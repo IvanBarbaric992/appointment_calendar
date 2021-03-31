@@ -1,0 +1,22 @@
+.day {
+  background-color: rgb(235, 235, 228);
+  pointer-events: none;
+
+  &--weekend {
+    background-color: rgba(254, 178, 178, 255);
+    pointer-events: none;
+  }
+}
+
+.time {
+  &--not-available {
+    background-color: rgb(235, 235, 228);
+    pointer-events: none;
+  }
+
+  &--rest {
+    background-color: rgba(231, 179, 1, 255);
+    pointer-events: none;
+    text-align: center !important;
+  }
+}
