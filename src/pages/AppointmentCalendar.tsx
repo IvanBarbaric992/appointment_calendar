@@ -11,7 +11,7 @@ const AppointmentCalendar = () => {
   const [appointments, setAppointments] = useState<AppointmentModel[]>(
     getInitialRandomAppointments({ nextDayDate: currentDate })
   );
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState({ isOpened: false, message: '' });
   const newAppointments = useRef<AppointmentModel[]>([]);
   const handleCurrentDateChange = (currDate: Date): void => {
     if (currDate.getDate() !== new Date().getDate() && currDate.getDay() !== 1) {
@@ -29,11 +29,21 @@ const AppointmentCalendar = () => {
       newAppointments.current.length < 2
     ) {
       onDoubleClick();
+    } else {
+      setOpenModal(prevState => ({
+        ...prevState,
+        isOpened: true,
+        message: 'You are not allowed to have more than one appointment in a day or more than two in a week',
+      }));
     }
   };
 
   const handleCloseDialog = () => {
-    setOpenModal(false);
+    setOpenModal(prevState => ({
+      ...prevState,
+      isOpened: false,
+      message: '',
+    }));
   };
 
   const handleCommitChanges = ({ added, changed, deleted }: ChangeSet): void => {
@@ -51,7 +61,11 @@ const AppointmentCalendar = () => {
       setAppointments(prevState => prevState.filter(x => x.id !== deleted));
       newAppointments.current = newAppointments.current.filter(x => x.id !== deleted);
     } else {
-      setOpenModal(true);
+      setOpenModal(prevState => ({
+        ...prevState,
+        isOpened: true,
+        message: 'Appointment is in read-only mode and can not be changed or deleted!',
+      }));
     }
   };
 
@@ -67,7 +81,7 @@ const AppointmentCalendar = () => {
         initialAppointments={appointments}
         handleDoubleClick={handleDoubleClick}
       />
-      {openModal ? <Dialog onClose={handleCloseDialog} open={openModal} /> : null}
+      {openModal ? <Dialog onClose={handleCloseDialog} modal={openModal} /> : null}
     </>
   );
 };

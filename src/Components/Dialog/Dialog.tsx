@@ -56,14 +56,15 @@ const DialogActions = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogActions);
 
-const Dialog = ({ onClose, open }: { onClose: () => void; open: boolean }) => (
+// eslint-disable-next-line @typescript-eslint/ban-types
+const Dialog = ({ onClose, modal }: { onClose: () => void; modal: { isOpened: boolean; message: string } }) => (
   <div>
-    <MaterialDialog onClose={onClose} aria-labelledby="customized-dialog-title" open={open}>
+    <MaterialDialog onClose={onClose} aria-labelledby="customized-dialog-title" open={modal.isOpened}>
       <DialogTitle id="customized-dialog-title" onClose={onClose}>
         Modal title
       </DialogTitle>
       <DialogContent dividers>
-        <Typography gutterBottom>Appointment is in read-only mode and can not be changed or deleted!</Typography>
+        <Typography gutterBottom>{modal.message}</Typography>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={onClose} color="primary">
