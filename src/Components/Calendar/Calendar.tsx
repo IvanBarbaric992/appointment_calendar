@@ -3,7 +3,13 @@
 import React, { FC } from 'react';
 
 import { Paper } from '@material-ui/core';
-import { ViewState, AppointmentModel, EditingState, ChangeSet } from '@devexpress/dx-react-scheduler';
+import {
+  ViewState,
+  AppointmentModel,
+  EditingState,
+  ChangeSet,
+  IntegratedEditing,
+} from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   WeekView,
@@ -43,6 +49,7 @@ const Calendar: FC<CalendarProps> = ({
       <Scheduler firstDayOfWeek={1} data={initialAppointments}>
         <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
         <EditingState onCommitChanges={commitChanges} />
+        <IntegratedEditing />
         <WeekView
           startDayHour={8}
           endDayHour={19}

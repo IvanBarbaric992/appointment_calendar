@@ -30,12 +30,18 @@ const AppointmentCalendar = () => {
     }
   };
 
-  const handleCommitChanges = ({ added, deleted }: ChangeSet): void => {
+  const handleCommitChanges = ({ added, changed, deleted }: ChangeSet): void => {
     if (added) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const newAppointmentId = appointments.length > 0 ? +appointments[appointments.length - 1].id! + 1 : 0;
       setAppointments(prevState => [...prevState, { id: newAppointmentId, ...added } as AppointmentModel]);
       newAppointments.current = [...newAppointments.current, { id: newAppointmentId, ...added } as AppointmentModel];
+    }
+    if (changed) {
+      setAppointments(prevState => prevState.map(x => (x.id && changed[x.id] ? { ...x, ...changed[x.id] } : x)));
+      newAppointments.current = newAppointments.current.map(x =>
+        x.id && changed[x.id] ? { ...x, ...changed[x.id] } : x
+      );
     }
     if (deleted) {
       setAppointments(prevState => prevState.filter(x => x.id !== deleted));
