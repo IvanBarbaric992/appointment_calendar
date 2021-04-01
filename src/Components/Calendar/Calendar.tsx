@@ -59,7 +59,7 @@ const Calendar: FC<CalendarProps> = ({
         <Toolbar />
         <DateNavigator />
         <Appointments appointmentComponent={Appointment} />
-        <AppointmentTooltip showCloseButton showDeleteButton />
+        <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
         <AppointmentForm
           basicLayoutComponent={CustomizedAppointmentForm}
           dateEditorComponent={CustomizedDateEditorComponent}

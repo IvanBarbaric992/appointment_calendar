@@ -2,6 +2,11 @@
   background-color: rgb(235, 235, 228);
   pointer-events: none;
 
+  &--not-available {
+    background-color: rgb(235, 235, 228);
+    pointer-events: none;
+  }
+
   &--weekend {
     background-color: rgba(254, 178, 178, 255);
     pointer-events: none;
