@@ -21,6 +21,7 @@ const AppointmentCalendar = () => {
     } else {
       setCurrentDate(getNextDayDate());
     }
+    newAppointments.current = [];
   };
 
   const handleDoubleClick = (e: never, onDoubleClick: () => unknown, startDate: Date) => {
