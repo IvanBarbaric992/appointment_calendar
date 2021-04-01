@@ -53,6 +53,7 @@ export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
           title: 'Reserved',
           startDate: new Date(date),
           endDate: new Date(date.setMinutes(date.getMinutes() + 30)),
+          isReadOnly: true,
         },
       ]; // new Date() is necessary because of reference problems
       appointmentId += 1;
