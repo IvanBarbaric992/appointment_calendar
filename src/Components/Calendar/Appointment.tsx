@@ -10,6 +10,7 @@ const Appointment = ({ children, ...restProps }: Appointments.AppointmentProps) 
       alignItems: 'center',
       borderRadius: '8px',
       fontSize: '1rem',
+      backgroundColor: !restProps.data.isReadOnly ? 'rgba(100, 101, 246)' : ' rgba(100,101,246, 0.3)',
     }}
   >
     {children}
