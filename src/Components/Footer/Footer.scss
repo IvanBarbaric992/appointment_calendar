@@ -1,0 +1,16 @@
+.footer--container {
+  width: 100%;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  transition: 200ms;
+  background: rgba(0, 0, 0, 0.87);
+  border-top: 1px solid black;
+  &:hover {
+    box-shadow: 0 0 2rem gray;
+  }
+  & > h5 {
+    color: white;
+  }
+}
