@@ -57,11 +57,17 @@ const DialogActions = withStyles((theme: Theme) => ({
 }))(MuiDialogActions);
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const Dialog = ({ onClose, modal }: { onClose: () => void; modal: { isOpened: boolean; message: string } }) => (
+const Dialog = ({
+  onClose,
+  modal,
+}: {
+  onClose: () => void;
+  modal: { isOpened: boolean; title: string; message: string };
+}) => (
   <div>
     <MaterialDialog onClose={onClose} aria-labelledby="customized-dialog-title" open={modal.isOpened}>
       <DialogTitle id="customized-dialog-title" onClose={onClose}>
-        Modal title
+        {modal.title}
       </DialogTitle>
       <DialogContent dividers>
         <Typography gutterBottom>{modal.message}</Typography>

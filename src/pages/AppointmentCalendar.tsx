@@ -8,10 +8,8 @@ import Dialog from 'Components/Dialog/Dialog';
 
 const AppointmentCalendar = () => {
   const [currentDate, setCurrentDate] = useState<Date>(getNextDayDate());
-  const [appointments, setAppointments] = useState<AppointmentModel[]>(
-    getInitialRandomAppointments({ nextDayDate: currentDate })
-  );
-  const [openModal, setOpenModal] = useState({ isOpened: false, message: '' });
+  const [appointments, setAppointments] = useState<AppointmentModel[]>([]);
+  const [openModal, setOpenModal] = useState({ isOpened: false, title: '', message: '' });
   const newAppointments = useRef<AppointmentModel[]>([]);
   const handleCurrentDateChange = (currDate: Date): void => {
     if (currDate.getDate() !== new Date().getDate() && currDate.getDay() !== 1) {
@@ -34,6 +32,7 @@ const AppointmentCalendar = () => {
       setOpenModal(prevState => ({
         ...prevState,
         isOpened: true,
+        title: 'Warning',
         message: 'You are not allowed to have more than one appointment in a day or more than two in a week',
       }));
     }
@@ -43,6 +42,7 @@ const AppointmentCalendar = () => {
     setOpenModal(prevState => ({
       ...prevState,
       isOpened: false,
+      title: '',
       message: '',
     }));
   };
@@ -65,13 +65,23 @@ const AppointmentCalendar = () => {
       setOpenModal(prevState => ({
         ...prevState,
         isOpened: true,
+        title: 'Warning',
         message: 'Appointment is in read-only mode and can not be changed or deleted!',
       }));
     }
   };
 
   useEffect(() => {
-    setAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
+    if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6 && currentDate > new Date()) {
+      setAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
+    } else {
+      setOpenModal(prevState => ({
+        ...prevState,
+        isOpened: true,
+        title: 'Note',
+        message: 'No available appointment dates in this week, switch to next one on date navigator!',
+      }));
+    }
   }, [currentDate]);
 
   return (

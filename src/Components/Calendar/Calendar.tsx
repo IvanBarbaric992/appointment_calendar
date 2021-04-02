@@ -63,8 +63,8 @@ const Calendar: FC<CalendarProps> = ({
         <Appointments appointmentComponent={Appointment} />
         <AppointmentTooltip showOpenButton showCloseButton showDeleteButton layoutComponent={CustomizedTooltipLayout} />
         <AppointmentForm
-          textEditorComponent={CustomizedTextEditorComponent}
           basicLayoutComponent={CustomizedAppointmentForm}
+          textEditorComponent={CustomizedTextEditorComponent}
           dateEditorComponent={CustomizedDateEditorComponent}
           booleanEditorComponent={CustomizedBooleanComponent}
         />
