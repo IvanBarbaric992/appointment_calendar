@@ -5,7 +5,7 @@ import './Header.scss';
 const Header = () => (
   <AppBar position="static" className="header">
     <Toolbar className="header__toolbar">
-      <Typography variant="h6" className="header__toolbar__title">
+      <Typography variant="h4" className="header__toolbar__title">
         React Appointment Calendar
       </Typography>
     </Toolbar>
