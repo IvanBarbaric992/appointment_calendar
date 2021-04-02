@@ -27,6 +27,7 @@ import Appointment from './Appointment';
 import CustomizedAppointmentForm from './CustomizedAppointmentForm';
 import CustomizedDateEditorComponent from './CustomizedDateEditorComponent';
 import CustomizedBooleanComponent from './CustomizedBooleanComponent';
+import CustomizedTextEditorComponent from './CustomizedTextEditorComponent';
 
 interface CalendarProps {
   currentDate?: string | number | Date;
@@ -61,6 +62,7 @@ const Calendar: FC<CalendarProps> = ({
         <Appointments appointmentComponent={Appointment} />
         <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
         <AppointmentForm
+          textEditorComponent={CustomizedTextEditorComponent}
           basicLayoutComponent={CustomizedAppointmentForm}
           dateEditorComponent={CustomizedDateEditorComponent}
           booleanEditorComponent={CustomizedBooleanComponent}
