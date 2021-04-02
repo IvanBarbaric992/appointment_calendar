@@ -8,11 +8,17 @@ interface Props {
 }
 
 export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
+  // if next day is saturday or sunday do not create initial appointments
+  if (nextDayDate.getDay() === 0 || nextDayDate.getDay() === 6) {
+    return [];
+  }
+
   const dateAfterOneWeekFromNextDayDate = new Date(
     nextDayDate.getFullYear(),
     nextDayDate.getMonth(),
     nextDayDate.getDate() + (7 - nextDayDate.getDay())
   );
+
   const currentWeekLeftDates = getDatesInRange({ startDate: nextDayDate, endDate: dateAfterOneWeekFromNextDayDate });
   const workingDates = currentWeekLeftDates.filter(x => {
     if (x.getDay() !== 0 && !(x.getDay() === 6 && x.getDate() % 2 !== 0)) {
