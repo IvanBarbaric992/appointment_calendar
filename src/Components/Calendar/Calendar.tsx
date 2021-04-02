@@ -28,6 +28,7 @@ import CustomizedAppointmentForm from './CustomizedAppointmentForm';
 import CustomizedDateEditorComponent from './CustomizedDateEditorComponent';
 import CustomizedBooleanComponent from './CustomizedBooleanComponent';
 import CustomizedTextEditorComponent from './CustomizedTextEditorComponent';
+import CustomizedTooltipLayout from './CustomizedTooltipLayout';
 
 interface CalendarProps {
   currentDate?: string | number | Date;
@@ -60,7 +61,7 @@ const Calendar: FC<CalendarProps> = ({
         <Toolbar />
         <DateNavigator />
         <Appointments appointmentComponent={Appointment} />
-        <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
+        <AppointmentTooltip showOpenButton showCloseButton showDeleteButton layoutComponent={CustomizedTooltipLayout} />
         <AppointmentForm
           textEditorComponent={CustomizedTextEditorComponent}
           basicLayoutComponent={CustomizedAppointmentForm}
