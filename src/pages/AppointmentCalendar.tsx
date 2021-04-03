@@ -13,8 +13,11 @@ const AppointmentCalendar = () => {
   const [openModal, setOpenModal] = useState({ isOpened: false, title: '', message: '' });
   const newAppointments = useRef<AppointmentModel[]>([]);
   const handleCurrentDateChange = (currDate: Date): void => {
-    setCurrentDate(getMondayDate(currDate));
-
+    if (currDate > getNextDayDate()) {
+      setCurrentDate(getMondayDate(currDate));
+    } else {
+      setCurrentDate(getNextDayDate());
+    }
     newAppointments.current = [];
   };
 
@@ -68,8 +71,7 @@ const AppointmentCalendar = () => {
   };
 
   useEffect(() => {
-    console.log(currentDate);
-    if (currentDate > getNextDayDate()) {
+    if (currentDate >= getNextDayDate()) {
       setAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
     } else {
       setOpenModal(prevState => ({
@@ -84,6 +86,7 @@ const AppointmentCalendar = () => {
   return (
     <>
       <Calendar
+        currentDate={currentDate}
         commitChanges={handleCommitChanges}
         currentDateChange={handleCurrentDateChange}
         initialAppointments={appointments}
