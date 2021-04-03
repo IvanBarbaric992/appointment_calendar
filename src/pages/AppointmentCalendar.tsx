@@ -71,7 +71,11 @@ const AppointmentCalendar = () => {
   };
 
   useEffect(() => {
-    if (currentDate >= getNextDayDate()) {
+    console.log(currentDate);
+    if (
+      currentDate >= getNextDayDate() &&
+      !(currentDate.getDay() === 0 || (currentDate.getDay() === 6 && currentDate.getDate() % 2 !== 0))
+    ) {
       setAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
     } else {
       setOpenModal(prevState => ({

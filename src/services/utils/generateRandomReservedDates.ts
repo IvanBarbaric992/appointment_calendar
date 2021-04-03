@@ -8,8 +8,8 @@ interface Props {
 }
 
 export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
-  // if next day is saturday or sunday do not create initial appointments
-  if (nextDayDate.getDay() === 0 || nextDayDate.getDay() === 6) {
+  // if next day is odd saturday or sunday do not create initial appointments
+  if (nextDayDate.getDay() === 0 || (nextDayDate.getDay() === 6 && nextDayDate.getDate() % 2 !== 0)) {
     return [];
   }
 
