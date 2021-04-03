@@ -5,6 +5,7 @@ import Calendar from 'Components/Calendar';
 import { getInitialRandomAppointments } from 'services/utils/generateRandomReservedDates';
 import { getNextDayDate } from 'services/utils/getNextDayDate';
 import Dialog from 'Components/Dialog/Dialog';
+import { getMondayDate } from 'services/utils/getMondayDate';
 
 const AppointmentCalendar = () => {
   const [currentDate, setCurrentDate] = useState<Date>(getNextDayDate());
@@ -12,13 +13,8 @@ const AppointmentCalendar = () => {
   const [openModal, setOpenModal] = useState({ isOpened: false, title: '', message: '' });
   const newAppointments = useRef<AppointmentModel[]>([]);
   const handleCurrentDateChange = (currDate: Date): void => {
-    if (currDate.getDate() !== new Date().getDate() && currDate.getDay() !== 1) {
-      setCurrentDate(
-        new Date(currDate.getFullYear(), currentDate.getMonth(), currDate.getDate() - ((currDate.getDay() + 6) % 7))
-      );
-    } else {
-      setCurrentDate(getNextDayDate());
-    }
+    setCurrentDate(getMondayDate(currDate));
+
     newAppointments.current = [];
   };
 
@@ -72,7 +68,8 @@ const AppointmentCalendar = () => {
   };
 
   useEffect(() => {
-    if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6 && currentDate > new Date()) {
+    console.log(currentDate);
+    if (currentDate > getNextDayDate()) {
       setAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
     } else {
       setOpenModal(prevState => ({
