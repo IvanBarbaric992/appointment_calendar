@@ -13,13 +13,17 @@ export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
     return [];
   }
 
-  const dateAfterOneWeekFromNextDayDate = new Date(
+  // get date of last day in current week(sunday)
+  const lastDateinCurrentWeek = new Date(
     nextDayDate.getFullYear(),
     nextDayDate.getMonth(),
     nextDayDate.getDate() + (7 - nextDayDate.getDay())
   );
 
-  const currentWeekLeftDates = getDatesInRange({ startDate: nextDayDate, endDate: dateAfterOneWeekFromNextDayDate });
+  // get range of dates between current date and sunday
+  const currentWeekLeftDates = getDatesInRange({ startDate: nextDayDate, endDate: lastDateinCurrentWeek });
+
+  // filter out only working dates
   const workingDates = currentWeekLeftDates.filter(x => {
     if (x.getDay() !== 0 && !(x.getDay() === 6 && x.getDate() % 2 !== 0)) {
       return new Date(x.setHours(0, 0, 0));
@@ -34,14 +38,14 @@ export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
   // less working days in a week left higher amount of time to generate random appointments
   // so I have choose to cut down in half possible reservations to avoid possible infinite loop
   let numberOfAppointments = 15;
-  if (workingDates.length < 3) {
+  if (workingDates.length < 2) {
     numberOfAppointments = 7;
   }
   let appointmentId = 0;
   while (reservedDates.length < numberOfAppointments) {
-    const random = Math.floor(Math.random() * workingDates.length);
-    const randomMorningHour = Math.floor(Math.random() * morningWorkingHours.length);
-    const randomAfternoonHour = Math.floor(Math.random() * afterNoonWorkingHours.length);
+    const random = Math.floor(Math.random() * workingDates.length); // get random index of working dates array
+    const randomMorningHour = Math.floor(Math.random() * morningWorkingHours.length); // random index of morning hours
+    const randomAfternoonHour = Math.floor(Math.random() * afterNoonWorkingHours.length); // random index of afternoon hours
     let date: Date | null = workingDates[random];
     if (workingDates[random].getDate() % 2 === 0) {
       const { hour, minute } = convertDecimalToHours({ decimal: morningWorkingHours[randomMorningHour] });
@@ -50,7 +54,7 @@ export const getInitialRandomAppointments = ({ nextDayDate }: Props) => {
       const { hour, minute } = convertDecimalToHours({ decimal: afterNoonWorkingHours[randomAfternoonHour] });
       date.setHours(hour, minute);
     }
-
+    // add new random appointment only if it is not in the same day and hour
     if (!reservedDates.find(x => x.startDate.toString() === date?.toString())) {
       reservedDates = [
         ...reservedDates,

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import { Paper } from '@material-ui/core';
 import {
@@ -31,7 +31,7 @@ import CustomizedTextEditorComponent from './CustomizedTextEditorComponent';
 import CustomizedTooltipLayout from './CustomizedTooltipLayout';
 
 interface CalendarProps {
-  currentDate?: string | number | Date;
+  currentDate: Date;
   currentDateChange?(currDate: Date): void;
   commitChanges(changes: ChangeSet): void;
   initialAppointments?: AppointmentModel[];
@@ -55,8 +55,10 @@ const Calendar: FC<CalendarProps> = ({
         <WeekView
           startDayHour={8}
           endDayHour={19}
-          dayScaleCellComponent={DayScaleCell}
-          timeTableCellComponent={props => <TimeTableCell handleDoubleClick={handleDoubleClick} {...props} />}
+          dayScaleCellComponent={props => <DayScaleCell currentDate={currentDate} {...props} />}
+          timeTableCellComponent={props => (
+            <TimeTableCell handleDoubleClick={handleDoubleClick} currentDate={currentDate} {...props} />
+          )}
         />
         <Toolbar />
         <DateNavigator />
