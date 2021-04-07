@@ -21,7 +21,11 @@ const AppointmentCalendar = () => {
     ) {
       return;
     }
-    if (nextDate > serverTomorrow && !checkIfDatesAreInTheSameWeek({ firstDate: currentDate, secondDate: nextDate })) {
+    if (
+      nextDate > serverTomorrow &&
+      !checkIfDatesAreInTheSameWeek({ firstDate: currentDate, secondDate: nextDate }) &&
+      !checkIfDatesAreInTheSameWeek({ firstDate: serverTomorrow, secondDate: nextDate })
+    ) {
       setCurrentDate(getMondayDate(nextDate));
     } else {
       setCurrentDate(serverTomorrow);
