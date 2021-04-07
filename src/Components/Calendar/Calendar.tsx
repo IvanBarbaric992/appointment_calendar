@@ -55,7 +55,7 @@ const Calendar: FC<CalendarProps> = ({
         <WeekView
           startDayHour={8}
           endDayHour={19}
-          dayScaleCellComponent={props => <DayScaleCell currentDate={currentDate} {...props} />}
+          dayScaleCellComponent={DayScaleCell}
           timeTableCellComponent={props => (
             <TimeTableCell handleDoubleClick={handleDoubleClick} currentDate={currentDate} {...props} />
           )}

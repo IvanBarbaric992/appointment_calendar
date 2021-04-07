@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { WeekView } from '@devexpress/dx-react-scheduler-material-ui';
+import { getNextDayDate } from 'services/utils/getNextDayDate';
 
 interface ExtendedTimeTableCellProps extends WeekView.TimeTableCellProps {
   handleDoubleClick(d: unknown, callback?: (e: unknown) => void, startDate?: Date): void;
@@ -13,7 +14,7 @@ const TimeTableCell = ({ handleDoubleClick, currentDate, ...restProps }: Extende
     return <WeekView.TimeTableCell {...restProps} className="day--weekend" />;
   }
   if (
-    (startDate && new Date(startDate.toDateString()) < new Date(currentDate.toDateString())) ||
+    (startDate && new Date(startDate.toDateString()) < new Date(getNextDayDate().toDateString())) ||
     (startDate && startDate?.getDate() % 2 === 0 && startDate?.getHours() >= 14) ||
     (startDate && startDate?.getDate() % 2 !== 0 && startDate?.getHours() < 13)
   ) {

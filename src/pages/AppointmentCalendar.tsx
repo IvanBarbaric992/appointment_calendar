@@ -6,14 +6,24 @@ import Dialog from 'Components/Dialog/Dialog';
 
 import { getInitialRandomAppointments } from 'services/utils/generateRandomReservedDates';
 import { getNextDayDate } from 'services/utils/getNextDayDate';
-import { getMondayDate } from 'services/utils/getMondayDate';
+// import { getMondayDate } from 'services/utils/getMondayDate';
 import { checkIfDatesAreInTheSameWeek } from 'services/utils/checkIfDatesAreInTheSameWeek';
+import { getMondayDate } from 'services/utils/getMondayDate';
 
 const AppointmentCalendar = () => {
   const [currentDate, setCurrentDate] = useState<Date>(() => getNextDayDate());
   const [appointments, setAppointments] = useState<AppointmentModel[]>([]);
   const [openModal, setOpenModal] = useState({ isOpened: false, title: '', message: '' });
   const handleCurrentDateChange = (nextDate: Date): void => {
+    if (nextDate.getDay() === 0 || (nextDate.getDay() === 6 && nextDate.getDate() % 2 !== 0)) {
+      setOpenModal(prevState => ({
+        ...prevState,
+        isOpened: true,
+        title: 'Note',
+        message: 'You can not make an appointment on odd saturday or any sunday.',
+      }));
+      return;
+    }
     const serverTomorrow = getNextDayDate();
     if (
       nextDate < serverTomorrow &&
@@ -26,7 +36,7 @@ const AppointmentCalendar = () => {
       !checkIfDatesAreInTheSameWeek({ firstDate: currentDate, secondDate: nextDate }) &&
       !checkIfDatesAreInTheSameWeek({ firstDate: serverTomorrow, secondDate: nextDate })
     ) {
-      setCurrentDate(getMondayDate(nextDate));
+      setCurrentDate(nextDate);
     } else {
       setCurrentDate(serverTomorrow);
     }
@@ -77,11 +87,17 @@ const AppointmentCalendar = () => {
   };
 
   useEffect(() => {
+    console.log(currentDate.toDateString() === getNextDayDate().toDateString());
     if (
       currentDate >= getNextDayDate() &&
       !(currentDate.getDay() === 0 || (currentDate.getDay() === 6 && currentDate.getDate() % 2 !== 0))
     ) {
-      setAppointments(getInitialRandomAppointments({ nextDayDate: currentDate }));
+      setAppointments(
+        getInitialRandomAppointments({
+          nextDayDate:
+            currentDate.toDateString() === getNextDayDate().toDateString() ? currentDate : getMondayDate(currentDate),
+        })
+      );
     } else {
       setOpenModal(prevState => ({
         ...prevState,
