@@ -13,17 +13,18 @@ const AppointmentCalendar = () => {
   const [currentDate, setCurrentDate] = useState<Date>(() => getNextDayDate());
   const [appointments, setAppointments] = useState<AppointmentModel[]>([]);
   const [openModal, setOpenModal] = useState({ isOpened: false, title: '', message: '' });
-  const handleCurrentDateChange = (currDate: Date): void => {
-    const areDatesInTheSameWeek = checkIfDatesAreInTheSameWeek({ firstDate: currDate, secondDate: currentDate });
-    if (currDate > currentDate && !areDatesInTheSameWeek) {
-      setCurrentDate(getMondayDate(currDate));
-    } else if (
-      (currDate < currentDate && currDate > getNextDayDate()) ||
-      (currDate > currentDate && areDatesInTheSameWeek)
+  const handleCurrentDateChange = (nextDate: Date): void => {
+    const serverTomorrow = getNextDayDate();
+    if (
+      nextDate < serverTomorrow &&
+      !checkIfDatesAreInTheSameWeek({ firstDate: serverTomorrow, secondDate: nextDate })
     ) {
-      setCurrentDate(currDate);
+      return;
+    }
+    if (nextDate > serverTomorrow && !checkIfDatesAreInTheSameWeek({ firstDate: currentDate, secondDate: nextDate })) {
+      setCurrentDate(getMondayDate(nextDate));
     } else {
-      setCurrentDate(getNextDayDate());
+      setCurrentDate(serverTomorrow);
     }
   };
 
