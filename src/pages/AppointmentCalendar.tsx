@@ -87,7 +87,6 @@ const AppointmentCalendar = () => {
   };
 
   useEffect(() => {
-    console.log(currentDate.toDateString() === getNextDayDate().toDateString());
     if (
       currentDate >= getNextDayDate() &&
       !(currentDate.getDay() === 0 || (currentDate.getDay() === 6 && currentDate.getDate() % 2 !== 0))
