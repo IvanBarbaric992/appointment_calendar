@@ -4,7 +4,7 @@ import { AppointmentModel, ChangeSet } from '@devexpress/dx-react-scheduler';
 import Calendar from 'Components/Calendar';
 import Dialog from 'Components/Dialog/Dialog';
 
-import { getInitialRandomAppointments } from 'services/utils/generateRandomReservedDates';
+import { getInitialRandomAppointments } from 'services/utils/generateRandomAppointments';
 import { getNextDayDate } from 'services/utils/getNextDayDate';
 import { checkIfDatesAreInTheSameWeek } from 'services/utils/checkIfDatesAreInTheSameWeek';
 import { getMondayDate } from 'services/utils/getMondayDate';
