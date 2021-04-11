@@ -6,7 +6,6 @@ import Dialog from 'Components/Dialog/Dialog';
 
 import { getInitialRandomAppointments } from 'services/utils/generateRandomReservedDates';
 import { getNextDayDate } from 'services/utils/getNextDayDate';
-// import { getMondayDate } from 'services/utils/getMondayDate';
 import { checkIfDatesAreInTheSameWeek } from 'services/utils/checkIfDatesAreInTheSameWeek';
 import { getMondayDate } from 'services/utils/getMondayDate';
 
@@ -87,24 +86,12 @@ const AppointmentCalendar = () => {
   };
 
   useEffect(() => {
-    if (
-      currentDate >= getNextDayDate() &&
-      !(currentDate.getDay() === 0 || (currentDate.getDay() === 6 && currentDate.getDate() % 2 !== 0))
-    ) {
-      setAppointments(
-        getInitialRandomAppointments({
-          nextDayDate:
-            currentDate.toDateString() === getNextDayDate().toDateString() ? currentDate : getMondayDate(currentDate),
-        })
-      );
-    } else {
-      setOpenModal(prevState => ({
-        ...prevState,
-        isOpened: true,
-        title: 'Note',
-        message: 'No available appointment dates in this week, switch to next one on date navigator!',
-      }));
-    }
+    setAppointments(
+      getInitialRandomAppointments({
+        nextDayDate:
+          currentDate.toDateString() === getNextDayDate().toDateString() ? currentDate : getMondayDate(currentDate),
+      })
+    );
   }, [currentDate]);
 
   return (

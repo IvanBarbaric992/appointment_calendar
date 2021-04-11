@@ -20,6 +20,8 @@ import {
   AppointmentForm,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
+import { getNextDayDate } from 'services/utils/getNextDayDate';
+
 import DayScaleCell from './DayScaleCell';
 import TimeTableCell from './TimeTableCell';
 import Legend from './Legend';
@@ -44,35 +46,43 @@ const Calendar: FC<CalendarProps> = ({
   commitChanges,
   handleDoubleClick,
   initialAppointments,
-}) => (
-  <>
-    <Legend />
-    <Paper>
-      <Scheduler firstDayOfWeek={1} data={initialAppointments}>
-        <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
-        <EditingState onCommitChanges={commitChanges} />
-        <IntegratedEditing />
-        <WeekView
-          startDayHour={8}
-          endDayHour={19}
-          dayScaleCellComponent={DayScaleCell}
-          timeTableCellComponent={props => (
-            <TimeTableCell handleDoubleClick={handleDoubleClick} currentDate={currentDate} {...props} />
-          )}
-        />
-        <Toolbar />
-        <DateNavigator />
-        <Appointments appointmentComponent={Appointment} />
-        <AppointmentTooltip showOpenButton showCloseButton showDeleteButton layoutComponent={CustomizedTooltipLayout} />
-        <AppointmentForm
-          basicLayoutComponent={CustomizedAppointmentForm}
-          textEditorComponent={CustomizedTextEditorComponent}
-          dateEditorComponent={CustomizedDateEditorComponent}
-          booleanEditorComponent={CustomizedBooleanComponent}
-        />
-      </Scheduler>
-    </Paper>
-  </>
-);
+}) => {
+  const nextDayDate = getNextDayDate();
+  return (
+    <>
+      <Legend />
+      <Paper>
+        <Scheduler firstDayOfWeek={1} data={initialAppointments}>
+          <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
+          <EditingState onCommitChanges={commitChanges} />
+          <IntegratedEditing />
+          <WeekView
+            startDayHour={8}
+            endDayHour={19}
+            dayScaleCellComponent={props => <DayScaleCell nextDayDate={nextDayDate} {...props} />}
+            timeTableCellComponent={props => (
+              <TimeTableCell handleDoubleClick={handleDoubleClick} nextDayDate={nextDayDate} {...props} />
+            )}
+          />
+          <Toolbar />
+          <DateNavigator />
+          <Appointments appointmentComponent={Appointment} />
+          <AppointmentTooltip
+            showOpenButton
+            showCloseButton
+            showDeleteButton
+            layoutComponent={CustomizedTooltipLayout}
+          />
+          <AppointmentForm
+            basicLayoutComponent={CustomizedAppointmentForm}
+            textEditorComponent={CustomizedTextEditorComponent}
+            dateEditorComponent={CustomizedDateEditorComponent}
+            booleanEditorComponent={CustomizedBooleanComponent}
+          />
+        </Scheduler>
+      </Paper>
+    </>
+  );
+};
 
 export default Calendar;
